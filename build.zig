@@ -6,14 +6,14 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     const lib = b.addStaticLibrary(.{
-        .name = "learn",
+        .name = "kernel",
         .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = optimize,
     });
 
     const csept = b.addAssembly(.{
-        .name = "test",
+        .name = "start",
         .source_file = b.path("src/asm/start.S"),
         .optimize = optimize,
         .target = target,
