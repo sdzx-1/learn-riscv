@@ -16,7 +16,6 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .strip = false,
     });
-    // exe.add(b.path("src/asm"));
     exe.setLinkerScript(b.path(("src/asm//os.ld")));
     exe.addAssemblyFile(b.path("src/asm/start.S"));
 
