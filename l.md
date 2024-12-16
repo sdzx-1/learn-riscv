@@ -86,3 +86,13 @@ BLT
 BLTU
 BGE
 BGEU
+----------
+JAL (Jump And Link)
+jal x1, label
+
+JALR (Jump And Link Register)
+
+J
+JAL x0, OFFSET
+JR
+JALR x0, 0(RS)
