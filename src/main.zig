@@ -8,7 +8,7 @@ comptime {
         \\
         \\_start:
         \\       csrr t0, mhartid
-        \\       mv tp, t0
+        \\       mv tp, t0      # ???
         \\       bnez t0, park
         \\       slli t0, t0, 10
         \\       la sp, stacks + STACK_SIZE 
