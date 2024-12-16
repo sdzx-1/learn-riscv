@@ -1,34 +1,42 @@
+const MAXNUM_CPU: u32 = 8;
+
 comptime {
     asm (
-        \\       .text
+        \\       .equ STACK_SIZE, 1024
         \\       .global _start
-        \\_start:
-        \\       la sp, stack_end
-        \\       call main 
+        \\       .text
         \\
-        \\stack_start:
-        \\       .rept 100
-        \\       .word 0
-        \\       .endr
-        \\stack_end:
-        \\       .end
+        \\_start:
+        \\       csrr t0, mhartid
+        \\       mv tp, t0
+        \\       bnez t0, park
+        \\       slli t0, t0, 10
+        \\       la sp, stacks + STACK_SIZE 
+        \\       add sp, sp, t0
+        \\       j start_kernel
+        \\
+        \\park: 
+        \\       wfi
+        \\       j park
+        \\
+        \\
+        \\.balign 16
+        \\stacks: 
+        \\    .skip STACK_SIZE * 8 
+        \\    .end
     );
 }
 
-var va: i32 = 1;
-var vb: i32 = 2;
-
-export fn main() void {
-    va = sum(va, vb);
+export fn start_kernel() void {
     while (true) {}
 }
 
-export fn sum(a: i32, b: i32) i32 {
-    var c: i32 = 0;
-    asm volatile ("add %[sum], %[add1], %[add2]"
-        : [sum] "=r" (c),
-        : [add1] "r" (a),
-          [add2] "r" (b),
-    );
-    return c;
-}
+// export fn sum(a: i32, b: i32) i32 {
+//     var c: i32 = 0;
+//     asm volatile ("add %[sum], %[add1], %[add2]"
+//         : [sum] "=r" (c),
+//         : [add1] "r" (a),
+//           [add2] "r" (b),
+//     );
+//     return c;
+// }
