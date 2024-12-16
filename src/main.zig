@@ -3,18 +3,18 @@ comptime {
         \\       .text
         \\       .global _start
         \\_start:
-        \\       j main 
+        \\       la sp, stack_end
+        \\       call main 
+        \\
+        \\stack_start:
+        \\       .rept 100
+        \\       .word 0
+        \\       .endr
+        \\stack_end:
+        \\       .end
     );
 }
 
-var a: i32 = 1;
-var b: i32 = 2;
-
-pub fn sum() void {
-    a = a + b;
-}
-
 export fn main() void {
-    sum();
     while (true) {}
 }

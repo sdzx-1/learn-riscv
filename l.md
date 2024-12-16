@@ -96,3 +96,22 @@ J
 JAL x0, OFFSET
 JR
 JALR x0, 0(RS)
+--------------------
+x0               zero
+x1               ra
+x2               sp
+x5 ~ x7          t0 ~ t2
+x28 ~ x31        t3 ~ t6
+x8, x9           s0, s1
+x18 ~ x27        s2 ~ s11
+x10, x11         a0, a1
+x12 ~ x17        a2 ~ a7
+-----------------------
+jal offset -- jal x1, offset
+jalr rs    -- jalr x1, 0(rs)
+j offset   -- jal x0, offset
+jr rs      -- jalr x0, 0(rs)
+call offset -- 
+tail offset
+ret 
+
