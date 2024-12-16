@@ -3,9 +3,17 @@ comptime {
         \\       .text
         \\       .global _start
         \\_start:
-        \\       li x6, 3
-        \\       li x7, 2 
-        \\       sub x5, x6, x7
+        \\       li x5, 0x80
+        \\       addi x5, x0, 0x80
+        \\       
+        \\       li x6, 0x12345001
+        \\        
+        \\       lui x6, 0x12345
+        \\       addi x6, x6, 0x001
+        \\
+        \\       li x7, 0x12345FFF
+        \\       lui x7, 0x12346
+        \\       addi x7, x7, -1
         \\
         \\loop:
         \\       j loop 
@@ -16,18 +24,3 @@ comptime {
 export fn main() void {
     while (true) {}
 }
-
-// opcode 7
-// OP  [6:5] [4:2] [1:0]
-// ADD 01    100   11
-
-// R-type Register 3   rs2 sr2 rd
-// I-type Immediate
-// S-type Store
-// B-type Branch
-// U-type Upper
-// J-type Jump
-
-//          x9   x10       x11                 ADD
-// 0000000 01001 01010 000 01011   0110011
-// ADD x11, x10, x9
