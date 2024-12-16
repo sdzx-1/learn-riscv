@@ -1,4 +1,4 @@
-const MAXNUM_CPU: u32 = 8;
+const u = @import("uart.zig");
 
 comptime {
     asm (
@@ -28,6 +28,8 @@ comptime {
 }
 
 export fn start_kernel() void {
+    u.uart_init();
+    u.uart_puts("Hello RVOS");
     while (true) {}
 }
 
