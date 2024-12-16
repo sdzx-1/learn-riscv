@@ -27,3 +27,7 @@ export fn main() void {
 // B-type Branch
 // U-type Upper
 // J-type Jump
+
+//          x9   x10       x11                 ADD
+// 0000000 01001 01010 000 01011   0110011
+// ADD x11, x10, x9
