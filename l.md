@@ -114,4 +114,13 @@ jr rs      -- jalr x0, 0(rs)
 call offset -- 
 tail offset
 ret 
+-----------------------
+CSRRW (Atomic Read/Wirte CSR)
 
+csrw csr, rs
+
+CSRRS (Atomic Read and Set Bits in CSR)
+
+csrr rd, csr
+
+mhartid
