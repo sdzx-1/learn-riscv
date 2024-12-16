@@ -3,16 +3,15 @@ comptime {
         \\       .text
         \\       .global _start
         \\_start:
+        \\       li x5, 0
+        \\       li x6, 5
+        \\loop: 
+        \\       addi x5, x5, 1
+        \\       bne x5, x6, loop
         \\       j main 
     );
 }
 
-extern var k: i32;
-
 export fn main() void {
-    var i: i32 = 0;
-    while (i < 5) {
-        i += 1;
-        k += i;
-    }
+    while (true) {}
 }
