@@ -3,9 +3,9 @@ comptime {
         \\       .text
         \\       .global _start
         \\_start:
-        \\       li x6, 1
-        \\       li x7, -2 
-        \\       add x5, x6, x7
+        \\       li x6, 3
+        \\       li x7, 2 
+        \\       sub x5, x6, x7
         \\
         \\loop:
         \\       j loop 
