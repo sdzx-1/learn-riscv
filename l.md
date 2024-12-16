@@ -21,3 +21,9 @@ LUI (Load Upper Immediate)
 lui x5, 0x12345
 ------------
 LI (Load Immediate)
+-----------
+AUIPC RD, IMM
+auipc x5, 0x12345   x5 = 0x12345 << 12 + pc
+
+LA (Load Address)
+la x5, foo
