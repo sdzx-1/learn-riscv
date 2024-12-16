@@ -93,8 +93,7 @@ pub fn uart_init() void {
     //  * split the value of 3(0x0003) into two bytes, DLL stores the low byte,
     //  * DLM stores the high byte.
     //  *
-    const lcr = uptr.LCR;
-    uptr.LCR = lcr | (1 << 7);
+    uptr.LCR = uptr.LCR | (1 << 7);
     uptr.RHR__THR__DLL = 0x03;
     uptr.IER__DLM = 0x00;
 
