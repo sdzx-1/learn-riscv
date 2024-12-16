@@ -6,12 +6,10 @@ pub fn build(b: *std.Build) void {
         .os_tag = .freestanding,
         .abi = .gnuilp32,
     } });
-    const optimize = b.standardOptimizeOption(.{
-        .preferred_optimize_mode = .Debug,
-    });
+    const optimize = b.standardOptimizeOption(.{});
 
     const exe = b.addExecutable(.{
-        .name = "rvos",
+        .name = "rvos.elf",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
@@ -19,6 +17,16 @@ pub fn build(b: *std.Build) void {
 
     exe.setLinkerScript(b.path("os.ld"));
 
+    const bin = b.addObjCopy(
+        exe.getEmittedBin(),
+        .{
+            .format = .bin,
+            // .only_section = ".text",
+        },
+    );
+    bin.step.dependOn(&exe.step);
+    const copy_bin = b.addInstallBinFile(bin.getOutput(), "rvos.bin");
+    b.default_step.dependOn(&copy_bin.step);
     b.installArtifact(exe);
 
     const run_cmd = b.addRunArtifact(exe);
