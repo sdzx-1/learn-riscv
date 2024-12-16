@@ -3,12 +3,7 @@ comptime {
         \\       .text
         \\       .global _start
         \\_start:
-        \\        la x5, _start
-        \\        jr x5
-        \\
-        \\loop:
-        \\       j loop 
-        \\      .end
+        \\       j main 
     );
 }
 

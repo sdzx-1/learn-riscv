@@ -46,3 +46,23 @@ SRLI  Shift Right Logical Immediate
 
 SRA   Shift Right Arithmetic
 SRAI
+-------------
+Load and Store Instructions
+
+LB
+
+lb x5, 40(x6)
+
+LBU
+
+lb x5, 40(x6)
+
+LH
+
+LHU
+
+LW
+
+SB
+SH
+SW
