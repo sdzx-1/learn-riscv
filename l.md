@@ -27,3 +27,22 @@ auipc x5, 0x12345   x5 = 0x12345 << 12 + pc
 
 LA (Load Address)
 la x5, foo
+----------
+AND 
+OR
+XOR
+ANDI
+ORI
+XORI
+
+NOT   NOT RD, RS      XORI RD, RS, -1
+-----------
+Shifting Instructions
+
+SLL   Shift Left Logical
+SRL   Shift Right Logical
+SLLI  Shift Left Logical Immediate
+SRLI  Shift Right Logical Immediate
+
+SRA   Shift Right Arithmetic
+SRAI
