@@ -66,3 +66,23 @@ LW
 SB
 SH
 SW
+----------------
+Conditional Branch Instructions
+BEQ
+BNE
+BLT
+BLTU
+BGE
+BGEU
+-------------
+BLE
+BLEU
+BGT
+BGTU
+------------
+BEQ
+BNE
+BLT
+BLTU
+BGE
+BGEU
