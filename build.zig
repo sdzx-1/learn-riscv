@@ -33,7 +33,7 @@ pub fn build(b: *std.Build) void {
     run_step.dependOn(&run_cmd.step);
 
     const waf = b.addWriteFiles();
-    _ = waf.addCopyFile(exe.getEmittedAsm(), "kernel.asm");
+    _ = waf.addCopyFile(exe.getEmittedAsm(), "main.asm");
     waf.step.dependOn(&exe.step);
     b.getInstallStep().dependOn(&waf.step);
 }
