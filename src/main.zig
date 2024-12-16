@@ -29,7 +29,7 @@ comptime {
 
 export fn start_kernel() void {
     u.uart_init();
-    u.uart_puts("Hello RVOS");
+    u.uart_puts("Hello RVOS\n");
     while (true) {}
 }
 
