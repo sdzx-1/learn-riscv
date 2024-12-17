@@ -120,7 +120,7 @@ pub fn puts(st: []const u8) void {
 }
 
 pub fn printf(comptime fmst: []const u8, val: anytype) void {
-    var buf: [500]u8 = undefined;
+    var buf: [60]u8 = undefined;
     _ = &buf;
     const res = std.fmt.bufPrint(&buf, fmst, val) catch "error!";
     puts(res);
