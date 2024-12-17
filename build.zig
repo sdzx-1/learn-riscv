@@ -1,11 +1,21 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) void {
-    const target = b.standardTargetOptions(.{ .default_target = .{
-        .cpu_arch = .riscv32,
-        .os_tag = .freestanding,
-        .abi = .gnuilp32,
-    } });
+    const target = b.standardTargetOptions(.{
+        .default_target = .{
+            .cpu_arch = .riscv32,
+            .os_tag = .freestanding,
+            .abi = .gnuilp32,
+            .cpu_model = .{ .explicit = &std.Target.riscv.cpu.generic_rv32 },
+            .cpu_features_add = std.Target.riscv.featureSet(&.{
+                // rv32g
+                std.Target.riscv.Feature.m,
+                std.Target.riscv.Feature.a,
+                std.Target.riscv.Feature.f,
+                std.Target.riscv.Feature.d,
+            }),
+        },
+    });
     const optimize = b.standardOptimizeOption(.{});
 
     const exe = b.addExecutable(.{
@@ -15,8 +25,10 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    exe.setLinkerScript(b.path("os.ld"));
+    exe.addAssemblyFile(b.path("src/start.S"));
     exe.addAssemblyFile(b.path("src/mem.S"));
+    exe.addAssemblyFile(b.path("src/switch.S"));
+    exe.setLinkerScript(b.path("os.ld"));
 
     const bin = b.addObjCopy(
         exe.getEmittedBin(),
