@@ -27,7 +27,7 @@ pub fn build(b: *std.Build) void {
 
     exe.addAssemblyFile(b.path("src/asm/start.S"));
     exe.addAssemblyFile(b.path("src/asm/mem.S"));
-    exe.addAssemblyFile(b.path("src/asm/switch.S"));
+    exe.addAssemblyFile(b.path("src/asm/entry.S"));
     exe.setLinkerScript(b.path("os.ld"));
 
     const bin = b.addObjCopy(

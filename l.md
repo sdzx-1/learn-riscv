@@ -124,3 +124,29 @@ CSRRS (Atomic Read and Set Bits in CSR)
 csrr rd, csr
 
 mhartid
+-------------------
+mtvec (Machine Trap-Vector Base-Address)
+
+30              2
+BASE(WARL)  MODE(WARL)
+
+MODE
+Direct   00
+Vectored 01
+-----------------------
+mepc (Machine Exception Program Counter)
+
+mret
+mcause (Machine Cause)
+1               31
+Interrupt       Exception Code(WLRL)
+
+1 Interrupt
+0 Exception
+mtval(Machine Trap Value)
+
+mstatus(Machine Status)
+
+xIE - MIE - 3 Interrupt Enable
+xPIE - MPIE - 7 Before Interrupt Enable val
+xPP - MPP - 12,11 Before Intrrupt, M - 11, S - 01, U - 00
