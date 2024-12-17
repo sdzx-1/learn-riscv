@@ -20,8 +20,9 @@ extern const HEAP_SIZE: usize;
 const PAGE_SIZE: usize = 4096;
 const LENGTH_RAM = 128 * 1024 * 1024;
 
-var _alloc_start: [*]u8 = @ptrFromInt(1);
-var _alloc_end: [*]u8 = @ptrFromInt(1);
+var _alloc_start: [*]u8 = undefined;
+var _alloc_end: [*]u8 = undefined;
+var _num_pages: usize = undefined;
 
 const Page = packed struct {
     taken: bool,
@@ -59,7 +60,7 @@ const Page = packed struct {
 pub fn init() void {
     const _heap_start_aligned = std.mem.alignPointer(HEAP_START, PAGE_SIZE).?;
     const num_reserved_pages = LENGTH_RAM / (PAGE_SIZE * PAGE_SIZE);
-    const _num_pages = (HEAP_SIZE - (@intFromPtr(_heap_start_aligned) - @intFromPtr(HEAP_START))) / PAGE_SIZE - num_reserved_pages;
+    _num_pages = (HEAP_SIZE - (@intFromPtr(_heap_start_aligned) - @intFromPtr(HEAP_START))) / PAGE_SIZE - num_reserved_pages;
 
     const pages: [*]Page = @ptrCast(HEAP_START);
     for (0.._num_pages) |i| {
@@ -81,4 +82,42 @@ pub fn init() void {
     printf("RODATA: {any} -> {any}\n", .{ RODATA_START, RODATA_END });
     printf("DATA:   {any} -> {any}\n", .{ DATA_START, DATA_END });
     printf("BSS:    {any} -> {any}\n", .{ BSS_START, BSS_END });
+}
+
+pub fn alloc(npages: usize) ?[*]u8 {
+    var found: usize = 0;
+    const pageList: [*]Page = @ptrCast(HEAP_START);
+    for (0.._num_pages - npages + 1) |i| {
+        if (pageList[i].is_free()) {
+            found += 1;
+            for (i + 1..i + npages) |j| {
+                if (!pageList[j].is_free()) {
+                    found = 0;
+                    break;
+                }
+            }
+            if (found != 0) {
+                for (i..i + npages) |k| {
+                    pageList[k].taken = true;
+                }
+                pageList[i + npages - 1].last = true;
+                return _alloc_start + i * PAGE_SIZE;
+            }
+        }
+    }
+
+    return null;
+}
+
+pub fn free(p: [*]u8) void {
+    const pageList: [*]Page = @as([*]Page, @ptrCast(HEAP_START)) + (p - _alloc_start) / PAGE_SIZE;
+    var counter: usize = 0;
+    while (!pageList[counter].is_free()) {
+        pageList[counter].clear();
+        if (pageList[counter].is_last()) {
+            break;
+        } else {
+            counter += 1;
+        }
+    }
 }
