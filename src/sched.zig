@@ -77,7 +77,7 @@ pub fn task_yield() void {
 
 fn task_delay(cot: usize) void {
     var count = cot * 50000;
-    while (count == 0) {
+    while (count != 0) {
         count -= 1;
     }
 }
