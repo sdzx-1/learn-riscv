@@ -25,9 +25,9 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    exe.addAssemblyFile(b.path("src/start.S"));
-    exe.addAssemblyFile(b.path("src/mem.S"));
-    exe.addAssemblyFile(b.path("src/switch.S"));
+    exe.addAssemblyFile(b.path("src/asm/start.S"));
+    exe.addAssemblyFile(b.path("src/asm/mem.S"));
+    exe.addAssemblyFile(b.path("src/asm/switch.S"));
     exe.setLinkerScript(b.path("os.ld"));
 
     const bin = b.addObjCopy(
