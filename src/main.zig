@@ -19,6 +19,8 @@ export fn start_kernel() void {
 
     sched.init();
 
+    sched.os_main();
+
     sched.schedule();
 
     uart.puts("Would not go here!\n");

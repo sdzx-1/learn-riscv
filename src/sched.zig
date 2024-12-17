@@ -36,10 +36,12 @@ const context = extern struct {
 
 extern fn switch_to(next: *context) void;
 
+const MAX_TASKS = 10;
 const STACK_SIZE = 1024;
-
-var task_stack: [STACK_SIZE]u8 align(16) = undefined;
-var ctx_task: context = undefined;
+var task_stacks: [MAX_TASKS][STACK_SIZE]u8 align(16) = undefined;
+var ctx_tasks: [MAX_TASKS]context = undefined;
+var _top: usize = 0;
+var _current: usize = 0;
 
 fn w_mscratch(x: u32) void {
     asm volatile ("csrw mscratch, %[val]"
@@ -50,12 +52,27 @@ fn w_mscratch(x: u32) void {
 
 pub fn init() void {
     w_mscratch(0);
-    ctx_task.sp = @intFromPtr(&task_stack);
-    ctx_task.ra = @intFromPtr(&user_task0);
 }
 
 pub fn schedule() void {
-    switch_to(&ctx_task);
+    const next: *context = &ctx_tasks[_current];
+    _current = (_current + 1) % _top;
+    switch_to(next);
+}
+
+pub fn task_create(start_routin: *const fn () void) bool {
+    if (_top < MAX_TASKS) {
+        ctx_tasks[_top].sp = @intFromPtr(&task_stacks[_top]);
+        ctx_tasks[_top].ra = @intFromPtr(start_routin);
+        _top += 1;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+pub fn task_yield() void {
+    schedule();
 }
 
 fn task_delay(cot: usize) void {
@@ -65,10 +82,37 @@ fn task_delay(cot: usize) void {
     }
 }
 
-fn user_task0() void {
+const DELAY = 1000;
+
+pub fn user_task0() void {
     uart.puts("Task 0: Created!\n");
     while (true) {
         uart.puts("Task 0: Running...\n");
-        task_delay(1000);
+        task_delay(DELAY);
+        task_yield();
     }
+}
+
+pub fn user_task1() void {
+    uart.puts("Task 1: Created!\n");
+    while (true) {
+        uart.puts("Task 1: Running...\n");
+        task_delay(DELAY);
+        task_yield();
+    }
+}
+
+pub fn user_task2() void {
+    uart.puts("Task 2: Created!\n");
+    while (true) {
+        uart.puts("Task 2: Running...\n");
+        task_delay(DELAY);
+        task_yield();
+    }
+}
+
+pub fn os_main() void {
+    _ = task_create(user_task0);
+    _ = task_create(user_task1);
+    _ = task_create(user_task2);
 }
