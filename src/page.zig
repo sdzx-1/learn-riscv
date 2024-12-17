@@ -74,6 +74,8 @@ pub fn page_init() void {
     printf("num_reserved_pages:  {any}\n", .{num_reserved_pages});
     printf("_num_pages:          {any}\n", .{_num_pages});
     printf("HEAP_SIZE:           OX{X}\n", .{HEAP_SIZE});
+    printf("_alloc_start:        {any}\n", .{_alloc_start});
+    printf("_alloc_end:          {any}\n", .{_alloc_end});
     printf("total pages:         {d}\n", .{HEAP_SIZE / PAGE_SIZE});
     printf("TEXT:   {any} -> {any}\n", .{ TEXT_START, TEXT_END });
     printf("RODATA: {any} -> {any}\n", .{ RODATA_START, RODATA_END });
