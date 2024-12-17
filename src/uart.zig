@@ -73,7 +73,7 @@ const UART = packed struct {
 const LSR_RX_READY: u8 = (1 << 0);
 const LSR_TX_IDLE: u8 = (1 << 5);
 
-pub fn uart_init() void {
+pub fn init() void {
 
     // /* disable interrupts. */
     uptr.IER__DLM = 0x00;
@@ -108,14 +108,14 @@ pub fn uart_init() void {
     //  */
     uptr.LCR = 0 | (3 << 0);
 }
-pub fn uart_putc(ch: u8) void {
+pub fn putc(ch: u8) void {
     while ((uptr.LSR & LSR_TX_IDLE) == 0) {}
     uptr.RHR__THR__DLL = ch;
 }
 
-pub fn uart_puts(st: []const u8) void {
+pub fn puts(st: []const u8) void {
     for (st) |v| {
-        uart_putc(v);
+        putc(v);
     }
 }
 
@@ -123,5 +123,5 @@ pub fn printf(comptime fmst: []const u8, val: anytype) void {
     var buf: [500]u8 = undefined;
     _ = &buf;
     const res = std.fmt.bufPrint(&buf, fmst, val) catch "error!";
-    uart_puts(res);
+    puts(res);
 }

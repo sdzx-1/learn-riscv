@@ -1,6 +1,6 @@
 const std = @import("std");
-const u = @import("uart.zig");
-const printf = u.printf;
+const uart = @import("uart.zig");
+const printf = uart.printf;
 
 extern const TEXT_START: [*]const u8;
 extern const TEXT_END: [*]const u8;
@@ -56,7 +56,7 @@ const Page = packed struct {
 //  *
 //  *  Note: _alloc_end may equal to _memory_end.
 //  */
-pub fn page_init() void {
+pub fn init() void {
     const _heap_start_aligned = std.mem.alignPointer(HEAP_START, PAGE_SIZE).?;
     const num_reserved_pages = LENGTH_RAM / (PAGE_SIZE * PAGE_SIZE);
     const _num_pages = (HEAP_SIZE - (@intFromPtr(_heap_start_aligned) - @intFromPtr(HEAP_START))) / PAGE_SIZE - num_reserved_pages;
@@ -69,7 +69,7 @@ pub fn page_init() void {
     _alloc_start = _heap_start_aligned + num_reserved_pages * PAGE_SIZE;
     _alloc_end = _alloc_start + (PAGE_SIZE * _num_pages);
 
-    u.uart_puts("print memory info:\n");
+    uart.puts("print memory info:\n");
     printf("_heap_start_aligned: {any}\n", .{_heap_start_aligned});
     printf("num_reserved_pages:  {any}\n", .{num_reserved_pages});
     printf("_num_pages:          {any}\n", .{_num_pages});
