@@ -1,3 +1,4 @@
+const std = @import("std");
 const uptr: *UART = @ptrFromInt(0x1000_0000);
 
 const UART = packed struct {
@@ -116,4 +117,11 @@ pub fn uart_puts(st: []const u8) void {
     for (st) |v| {
         uart_putc(v);
     }
+}
+
+pub fn printf(comptime fmst: []const u8, val: anytype) void {
+    var buf: [500]u8 = undefined;
+    _ = &buf;
+    const res = std.fmt.bufPrint(&buf, fmst, val) catch "error!";
+    uart_puts(res);
 }
