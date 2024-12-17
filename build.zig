@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
     });
 
     exe.setLinkerScript(b.path("os.ld"));
+    exe.addAssemblyFile(b.path("src/mem.S"));
 
     const bin = b.addObjCopy(
         exe.getEmittedBin(),
