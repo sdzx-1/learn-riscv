@@ -1,4 +1,5 @@
 const uart = @import("uart.zig");
+const trap = @import("trap.zig");
 
 const context = extern struct {
     ra: u32,
@@ -88,6 +89,7 @@ pub fn user_task0() void {
     uart.puts("Task 0: Created!\n");
     while (true) {
         uart.puts("Task 0: Running...\n");
+        trap.t_test();
         task_delay(DELAY);
         task_yield();
     }
@@ -102,17 +104,7 @@ pub fn user_task1() void {
     }
 }
 
-pub fn user_task2() void {
-    uart.puts("Task 2: Created!\n");
-    while (true) {
-        uart.puts("Task 2: Running...\n");
-        task_delay(DELAY);
-        task_yield();
-    }
-}
-
 pub fn os_main() void {
     _ = task_create(user_task0);
     _ = task_create(user_task1);
-    _ = task_create(user_task2);
 }
