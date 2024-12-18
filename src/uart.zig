@@ -107,6 +107,8 @@ pub fn init() void {
     //  * - disabled baud latch
     //  */
     uptr.LCR = 0 | (3 << 0);
+
+    uptr.IER__DLM = uptr.IER__DLM | (1 << 0);
 }
 pub fn putc(ch: u8) void {
     while ((uptr.LSR & LSR_TX_IDLE) == 0) {}
@@ -124,4 +126,15 @@ pub fn printf(comptime fmst: []const u8, val: anytype) void {
     _ = &buf;
     const res = std.fmt.bufPrint(&buf, fmst, val) catch "error!";
     puts(res);
+}
+
+pub fn getc() u8 {
+    while (0 == (uptr.LSR & LSR_RX_READY)) {}
+    return uptr.RHR__THR__DLL;
+}
+
+pub fn isr() void {
+    const c = getc();
+    putc(c);
+    putc('\n');
 }

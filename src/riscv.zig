@@ -14,14 +14,14 @@ pub fn r_mhartid() u32 {
     return x;
 }
 
-const MSTATUS_MPP: u32 = (3 << 11);
-const MSTATUS_SPP: u32 = (1 << 8);
-const MSTATUS_MPIE: u32 = (1 << 7);
-const MSTATUS_SPIE: u32 = (1 << 5);
-const MSTATUS_UPIE: u32 = (1 << 4);
-const MSTATUS_MIE: u32 = (1 << 3);
-const MSTATUS_SIE: u32 = (1 << 1);
-const MSTATUS_UIE: u32 = (1 << 0);
+pub const MSTATUS_MPP: u32 = (3 << 11);
+pub const MSTATUS_SPP: u32 = (1 << 8);
+pub const MSTATUS_MPIE: u32 = (1 << 7);
+pub const MSTATUS_SPIE: u32 = (1 << 5);
+pub const MSTATUS_UPIE: u32 = (1 << 4);
+pub const MSTATUS_MIE: u32 = (1 << 3);
+pub const MSTATUS_SIE: u32 = (1 << 1);
+pub const MSTATUS_UIE: u32 = (1 << 0);
 
 pub fn r_mstatus() u32 {
     var x: u32 = undefined;
@@ -67,9 +67,9 @@ pub fn w_mtvec(x: u32) void {
     );
 }
 
-const MIE_MEIE: u32 = (1 << 11); // external
-const MIE_MTIE: u32 = (1 << 7); // timer
-const MIE_MSIE: u32 = (1 << 3); // software
+pub const MIE_MEIE: u32 = (1 << 11); // external
+pub const MIE_MTIE: u32 = (1 << 7); // timer
+pub const MIE_MSIE: u32 = (1 << 3); // software
 
 pub fn r_mie() u32 {
     var x: u32 = undefined;
