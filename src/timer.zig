@@ -33,6 +33,7 @@ var _tick: u32 = 0;
 pub fn handler() void {
     _tick += 1;
     uart.printf("tick: {d}\n", .{_tick});
+    uart.printf("rtc val: {d}\n", .{CLINT_MTIME.*});
 
     load(TIMER_INTERVAL);
 }
