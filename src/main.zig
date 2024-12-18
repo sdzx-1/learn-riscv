@@ -9,7 +9,7 @@ export fn start_kernel() void {
     uart.init();
     uart.puts("Hello RVOS!\n");
 
-    // page.init();
+    page.init();
 
     trap.init();
 

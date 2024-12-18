@@ -77,10 +77,12 @@ pub fn task_yield() void {
 }
 
 fn task_delay(cot: usize) void {
-    var count = cot * 50000;
-    while (count != 0) {
-        count -= 1;
-    }
+    _ = cot;
+    // var count = cot * 50000;
+    // while (count != 0) {
+    //     count -= 1;
+    // }
+    asm volatile ("wfi");
 }
 
 const DELAY = 1000;
