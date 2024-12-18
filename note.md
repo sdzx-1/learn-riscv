@@ -150,3 +150,34 @@ mstatus(Machine Status)
 xIE - MIE - 3 Interrupt Enable
 xPIE - MPIE - 7 Before Interrupt Enable val
 xPP - MPP - 12,11 Before Intrrupt, M - 11, S - 01, U - 00
+
+-----------------------------
+interrupt
+
+software
+time
+externel
+
+mie (Machine Interrupt Enable) -- write
+
+mip (Machine Interrupt Pending) -- read
+
+-----------------------------
+externel
+
+PLIC (Platform-Level Interrupt Controller)
+
+Interrupt Source 
+
+Priority     BASE + (interrupt-id) * 4
+7  0, 1 - 7
+
+UARTO_IRQ = 10
+
+Pending      BASE + Ox1000 + (interrupt-id) / 32   2
+
+Enable       BASE + 0x2000 + hart * 0x80           2
+
+Threshold    BASE + 0x200000 + hart * 0x1000
+
+Claim/Complete  BASE + 0x200004 + hart * 0x1000

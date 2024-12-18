@@ -89,7 +89,6 @@ pub fn user_task0() void {
     uart.puts("Task 0: Created!\n");
     while (true) {
         uart.puts("Task 0: Running...\n");
-        trap.t_test();
         task_delay(DELAY);
         task_yield();
     }

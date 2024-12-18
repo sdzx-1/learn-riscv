@@ -15,9 +15,10 @@ export fn trap_handler(epc: u32, cause: u32) callconv(.c) u32 {
     if ((cause & riscv.MCAUSE_MASK_INTERRUPT) > 0) {
         uart.puts("Interrupt happened!");
     } else {
-        uart.printf("Sync exceptions! Code = {d}\n", .{cause_code});
-        // @panic("OOPS! What can I do!\n");
-        return_pc += 4;
+        while (true) {
+            uart.printf("Sync exceptions! Code = {d}\n", .{cause_code});
+        }
+        // return_pc += 4;
     }
 
     return return_pc;
