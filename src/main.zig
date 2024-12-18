@@ -3,6 +3,7 @@ const page = @import("page.zig");
 const sched = @import("sched.zig");
 const trap = @import("trap.zig");
 const plic = @import("plic.zig");
+const timer = @import("timer.zig");
 
 export fn start_kernel() void {
     uart.init();
@@ -13,6 +14,8 @@ export fn start_kernel() void {
     trap.init();
 
     plic.init();
+
+    timer.init();
 
     sched.init();
 

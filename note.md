@@ -181,3 +181,10 @@ Enable       BASE + 0x2000 + hart * 0x80           2
 Threshold    BASE + 0x200000 + hart * 0x1000
 
 Claim/Complete  BASE + 0x200004 + hart * 0x1000
+-------------------------------
+Core Local Interruptor
+
+CLINT
+
+mtime  (rtc real time counter)  BASE + 0xbff8
+mtimecmp (timer compare register)   BASE + 0x4000 + hart * 8

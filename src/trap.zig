@@ -1,6 +1,7 @@
 const riscv = @import("riscv.zig");
 const uart = @import("uart.zig");
 const plic = @import("plic.zig");
+const timer = @import("timer.zig");
 
 extern fn trap_vector() void;
 
@@ -30,7 +31,10 @@ export fn trap_handler(epc: u32, cause: u32) callconv(.c) u32 {
     if ((cause & riscv.MCAUSE_MASK_INTERRUPT) > 0) {
         switch (cause_code) {
             3 => uart.puts("software interruption!\n"),
-            7 => uart.puts("timer interruption!\n"),
+            7 => {
+                uart.puts("timer interruption!\n");
+                timer.handler();
+            },
             11 => {
                 uart.puts("external interruption!\n");
                 external_interrupt_handler();
