@@ -2,6 +2,8 @@ const uart = @import("uart.zig");
 const trap = @import("trap.zig");
 const riscv = @import("riscv.zig");
 const timer = @import("timer.zig");
+const lock = @import("lock.zig");
+const std = @import("std");
 
 const context = extern struct {
     ra: u32,
