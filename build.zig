@@ -16,13 +16,13 @@ pub fn build(b: *std.Build) void {
             }),
         },
     });
-    // const optimize = b.standardOptimizeOption(.{});
+    const optimize = b.standardOptimizeOption(.{});
 
     const exe = b.addExecutable(.{
         .name = "rvos.elf",
         .root_source_file = b.path("src/main.zig"),
         .target = target,
-        .optimize = .ReleaseSmall,
+        .optimize = optimize,
     });
 
     exe.addAssemblyFile(b.path("src/asm/start.S"));

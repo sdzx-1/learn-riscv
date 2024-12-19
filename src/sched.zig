@@ -1,5 +1,7 @@
 const uart = @import("uart.zig");
 const trap = @import("trap.zig");
+const riscv = @import("riscv.zig");
+const timer = @import("timer.zig");
 
 const context = extern struct {
     ra: u32,
@@ -33,9 +35,10 @@ const context = extern struct {
     t4: u32,
     t5: u32,
     t6: u32,
+    epc: u32,
 };
 
-extern fn switch_to(next: *context) void;
+extern fn switch_to(next: *context) callconv(.C) void;
 
 const MAX_TASKS = 10;
 const STACK_SIZE = 1024;
@@ -53,6 +56,7 @@ fn w_mscratch(x: u32) void {
 
 pub fn init() void {
     w_mscratch(0);
+    riscv.w_mie(riscv.r_mie() | riscv.MIE_MSIE);
 }
 
 pub fn schedule() void {
@@ -64,7 +68,7 @@ pub fn schedule() void {
 pub fn task_create(start_routin: *const fn () void) bool {
     if (_top < MAX_TASKS) {
         ctx_tasks[_top].sp = @intFromPtr(&task_stacks[_top]);
-        ctx_tasks[_top].ra = @intFromPtr(start_routin);
+        ctx_tasks[_top].epc = @intFromPtr(start_routin);
         _top += 1;
         return true;
     } else {
@@ -73,7 +77,8 @@ pub fn task_create(start_routin: *const fn () void) bool {
 }
 
 pub fn task_yield() void {
-    schedule();
+    const id = riscv.r_mhartid();
+    timer.CLINT_MSIP(id).* = 1;
 }
 
 fn task_delay(cot: usize) void {
@@ -89,10 +94,12 @@ const DELAY = 1000;
 
 pub fn user_task0() void {
     uart.puts("Task 0: Created!\n");
+
+    task_yield();
+    uart.puts("Task 0: I'm back!\n");
     while (true) {
         uart.puts("Task 0: Running...\n");
         task_delay(DELAY);
-        task_yield();
     }
 }
 
@@ -101,7 +108,6 @@ pub fn user_task1() void {
     while (true) {
         uart.puts("Task 1: Running...\n");
         task_delay(DELAY);
-        task_yield();
     }
 }
 

@@ -2,6 +2,7 @@ const riscv = @import("riscv.zig");
 const uart = @import("uart.zig");
 const plic = @import("plic.zig");
 const timer = @import("timer.zig");
+const sched = @import("sched.zig");
 
 extern fn trap_vector() void;
 
@@ -30,7 +31,11 @@ export fn trap_handler(epc: u32, cause: u32) callconv(.c) u32 {
 
     if ((cause & riscv.MCAUSE_MASK_INTERRUPT) > 0) {
         switch (cause_code) {
-            3 => uart.puts("software interruption!\n"),
+            3 => {
+                uart.puts("software interruption!\n");
+                timer.CLINT_MSIP(riscv.r_mhartid()).* = 0;
+                sched.schedule();
+            },
             7 => {
                 uart.puts("timer interruption!\n");
                 timer.handler();

@@ -188,3 +188,5 @@ CLINT
 
 mtime  (rtc real time counter)  BASE + 0xbff8
 mtimecmp (timer compare register)   BASE + 0x4000 + hart * 8
+
+MSIP  BASE + 4 * hart

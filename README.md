@@ -1,6 +1,6 @@
 # build
 ```shell
-zig build
+zig build -Doptimize=ReleaseSmall
 ```
 
 # run 

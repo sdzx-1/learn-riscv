@@ -35,7 +35,6 @@ pub fn init() void {
     PLIC_MTHRESHOLD(hart).* = 0;
 
     riscv.w_mie(riscv.r_mie() | riscv.MIE_MEIE);
-    riscv.w_mstatus(riscv.r_mstatus() | riscv.MSTATUS_MIE);
 }
 
 pub fn claim() u32 {
